@@ -1,0 +1,17 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="description" content="Object Detection Service">
+        <meta name="keywords" content="Object Detection, YOLO">
+        <meta name="author" content="Junhua">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- Import CSS for the data -->
+        <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+        <link rel="stylesheet" href="{{url_for('static', filename='css/font-awesome.min.css')}}" />
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    </head>
+    <body>
+        {% block content %} {% endblock %}
+    </body>
+</html>
