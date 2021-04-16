@@ -12,8 +12,11 @@
         How does this work?
     </p>
     <p>
-        This website takes a copy of your image and identifies what is inside and draw a bounding box
+        This website takes a copy of your image and identifies what is inside and draw a bounding box and downloads the picture back to you.
     </p>
-    <a href="/upload" type="button" class="btn btn-primary">Upload</a>
+    <form method=post enctype=multipart/form-data action='/upload'>
+        <input type=file name=file>
+        <input type=submit value=Upload class="btn btn-primary">
+    </form>
 </div>
 {% endblock %}
