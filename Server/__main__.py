@@ -64,6 +64,7 @@ def upload_img_page():
     response_file.save(image_io, 'JPEG')
     image_io.seek(0)
 
+    # Send the file
     return send_file(
         image_io,
         mimetype='image/jpg',
@@ -78,4 +79,4 @@ if __name__ == "__main__":
     port = 80
 
     # Run the application with the constants
-    app.run(host, port, debug=True)
+    app.run(host, port, debug=False)
