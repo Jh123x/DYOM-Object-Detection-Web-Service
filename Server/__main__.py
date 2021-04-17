@@ -36,6 +36,16 @@ def upload_img_page():
 
     # Get the file
     file = request.files['file']
+    file.seek(0, os.SEEK_END)
+    file_length = file.tell()
+
+    # Check for max file size
+    if file_length > app.config['MAX_CONTENT_LENGTH']:
+        flash('File uploaded is too bug')
+        return redirect('/')
+
+    # Reset back to start of file
+    file.seek(0)
 
     # Check if the files uploaded is not empty
     if file.filename == '':
