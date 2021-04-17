@@ -7,12 +7,10 @@ from functions.object_detect import draw_bounding_boxes
 
 # Constants
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
-UPLOAD_FOLDER = './uploads'
 
 # Create the application
 app = Flask(__name__)
 app.secret_key = os.urandom(64).hex()
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 1024 * 1024
 
 
