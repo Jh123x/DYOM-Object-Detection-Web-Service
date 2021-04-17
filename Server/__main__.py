@@ -1,19 +1,19 @@
-from flask import Flask, render_template, request, redirect
-from flask.helpers import flash, send_file, send_from_directory
-from werkzeug.utils import secure_filename
-from functions.object_detect import draw_bounding_boxes
 import os
+from io import BytesIO
+from flask.helpers import flash, send_file
+from flask import Flask, render_template, request, redirect
+from functions.object_detect import draw_bounding_boxes
 
 
 # Constants
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 UPLOAD_FOLDER = './uploads'
 
-
 # Create the application
 app = Flask(__name__)
 app.secret_key = os.urandom(64).hex()
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['MAX_CONTENT_LENGTH'] = 1024 * 1024
 
 
 # Create the routes
@@ -33,7 +33,7 @@ def upload_img_page():
 
     # Check if any file is uploaded
     if 'file' not in request.files:
-        flash('File uploaded is invalid','Error')
+        flash('File uploaded is invalid', 'Error')
         return redirect('/')
 
     # Get the file
@@ -47,25 +47,27 @@ def upload_img_page():
     # Check if the extension of the file is correct
     for ext in ALLOWED_EXTENSIONS:
         if ext in file.filename:
-            curr_ext = ext
             break
     else:
-        flash(f"File extension is not allowed. We only allow {', '.join(ALLOWED_EXTENSIONS)}.")
+        flash(
+            f"File extension is not allowed. We only allow {', '.join(ALLOWED_EXTENSIONS)}.")
         return redirect('/')
 
-    # Save the file to a path
-    print(f'Valid file received: {file}')
-
     # Get the filepath
-    filename = secure_filename(f'temp.{curr_ext}')
-    filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-
-    # Save the file at path
-    file.save(filepath)
+    img_bytes = BytesIO(file.read())
 
     # Pass the file_path to the object detection code and let the user download the file
-    response_filepath = draw_bounding_boxes(filepath, curr_ext)
-    return send_file(response_filepath)
+    response_file = draw_bounding_boxes(img_bytes)
+
+    # Create temporary IO to store the file
+    image_io = BytesIO()
+    response_file.save(image_io, 'JPEG')
+    image_io.seek(0)
+
+    return send_file(
+        image_io,
+        mimetype='image/jpg',
+    )
 
 
 # If the file is run as main
@@ -76,4 +78,4 @@ if __name__ == "__main__":
     port = 80
 
     # Run the application with the constants
-    app.run(host, port, debug=False)
+    app.run(host, port, debug=True)
