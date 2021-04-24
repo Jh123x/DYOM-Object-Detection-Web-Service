@@ -69,6 +69,13 @@ def upload_img_page():
     )
 
 
+@app.errorhandler(413)
+def too_large(e):
+    """The payload is too large"""
+    flash("The image is too large")
+    return redirect('/')
+
+
 # If the file is run as main
 if __name__ == "__main__":
 
