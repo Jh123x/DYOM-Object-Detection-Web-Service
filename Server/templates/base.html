@@ -1,5 +1,6 @@
 <html>
     <head>
+        <!-- Required meta tags -->
         <meta charset="UTF-8">
         <meta name="description" content="Object Detection Service">
         <meta name="keywords" content="Object Detection, YOLO">
@@ -20,5 +21,6 @@
             {% endif %}
         {% endwith %}
         {% block content %} {% endblock %}
+        <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
     </body>
 </html>
