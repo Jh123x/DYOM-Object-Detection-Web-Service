@@ -1,8 +1,8 @@
 import os
 from io import BytesIO
 from flask.helpers import flash, send_file
-from flask import Flask, render_template, request, redirect
 from functions.object_detect import draw_bounding_boxes
+from flask import Flask, render_template, request, redirect
 
 
 # Constants
@@ -11,7 +11,7 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 # Create the application
 app = Flask(__name__)
 app.secret_key = os.urandom(64).hex()
-app.config['MAX_CONTENT_LENGTH'] = 1024 * 1024
+app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024  # 50 * 1MB
 
 
 # Create the routes
